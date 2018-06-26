@@ -1,4 +1,6 @@
-/*errors.c*/
+#include <stdio.h>
+
+"include "main.h"
 #include "errors.h"
 
 /*diccioniario de errores*/
@@ -17,3 +19,10 @@ char * errors[MAX_ERRORS]=
                 "El registro no existe",
                 "El registro está duplicado"
         };
+
+status_t print_errors(status_t st)
+{
+        fprintf(stderr,"%s",errors[st]);
+
+        return st;
+}
