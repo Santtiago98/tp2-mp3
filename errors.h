@@ -2,6 +2,10 @@
 #ifndef ERRORS__H
 #define ERRORS__H
 
+#include <stdio.h>
+#include "main.h"
+#include "types.h"
+
 #define MAX_ERRORS 20
 
 typedef enum 
@@ -19,5 +23,7 @@ typedef enum
     ERROR_INEXISTENT_KEY,
     ERROR_DUPLICATED_PRODUCT
 }status_t;
+
+status_t print_errors(status_t st);
 
 #endif
