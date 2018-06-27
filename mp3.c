@@ -184,40 +184,71 @@ status_t read_header(FILE * f, char * header) /*ya necesito memoria reservada pa
     return OK;
 }
 
-status_t ADT_Track_delete (ADT_Track_t ** track)
+status_t ADT_Track_delete (void ** p)
 {
+    ADT_Track_t **track=(ADT_Track_t **)p;
     if(track == NULL)
         return ERROR_NULL_POINTER;
     free (*track);
     (*track) = NULL;
+
     return OK;
 }
 
-status_t ADT_Track_print_to_csv (FILE * fo, ADT_Track_t * track)
+status_t ADT_Track_print_to_csv (FILE * fo, void * p)
 {
+    ADT_Track_t *track=(ADT_Track_t*)p;
+
     if(fo == NULL || track == NULL)
         return ERROR_NULL_POINTER;
     fprintf(fo, "%s|%s|%s|%s|%d|%s", track->tag, track->title, track->artist, track->album, track->year, track->genre);
     return OK;
 }
 
-status_t ADT_Track_print_to_xml (FILE * fo, ADT_Track_t * track)
+status_t ADT_Track_print_to_xml (FILE * fo, void * p)
 {
+    ADT_Track_t *track=(ADT_Track_t*)p;
+
     if(fo == NULL || track == NULL)
         return ERROR_NULL_POINTER;
-    fprintf(fo,"\t<track>");
+    fprintf(fo,"%s\n","<?xml version="1.0" ?>");
+    fprintf(fo,"%s\n","<tracks>");
+    fprintf(fo,"\t%s\n","<track>");
     fprintf(fo,"\t<tag>%s</tag>\n", track->tag);
-    fprintf(fo,"\t\t<title>%s</title>\n", track->title);
-    fprintf(fo,"\t\t\t<artist>%s</artist>\n", track->artist);
-    fprintf(fo,"\t\t\t\t<album>%s</album>\n", track->album);
-    fprintf(fo,"\t\t\t\t\t<year>%d</year>\n", track->year);
-    fprintf(fo,"\t\t\t\t\t\t<genre>%s</genre>\n", track->genre);
+    fprintf(fo,"\t<title>%s</title>\n", track->title);
+    fprintf(fo,"\tt<artist>%s</artist>\n", track->artist);
+    fprintf(fo,"\t<album>%s</album>\n", track->album);
+    fprintf(fo,"\t<year>%d</year>\n", track->year);
+    fprintf(fo,"\t<genre>%s</genre>\n", track->genre);
+    fprintf(fo,"\t%s\n","</track>");
+    fprintf(fo,"%s\n","</tracks>");
+
     return OK;
 }
+
+status_t ADT_Track_print_to_html(FILE *fo, void *p)
+{
+    ADT_Track_t *track=(ADT_Track_t*)p;
+
+    if(fo == NULL || track == NULL)
+        return ERROR_NULL_POINTER;
+    fprintf(fo,"%s\n","<track>");
+    fprintf(fo,"\t<tag>%s</tag>\n", track->tag);
+    fprintf(fo,"\t<title>%s</title>\n", track->title);
+    fprintf(fo,"\t<artist>%s</artist>\n", track->artist);
+    fprintf(fo,"\t<album>%s</album>\n", track->album);
+    fprintf(fo,"\t<year>%d</year>\n", track->year);
+    fprintf(fo,"\t<genre>%s</genre>\n", track->genre);
+    fprintf(fo,"%s\n","</track>");
+
+    return OK;
+}
+
 int compare_strings(const char *s1,const char *s2)
 {
     return strcmp(s1,s2);
 }
+
 int compare_by_genre(const void *pv1, const void *pv2)
 {
     ADT_Track_t *p1,*p2;
@@ -239,10 +270,10 @@ int compare_by_artist(const void *pv1, const void *pv2)
     if(p1==NULL || p2==NULL)
         return ERROR_NULL_POINTER;
 
-    return strcmp(p1->artist,p2->artist);
+    return compare_strings(p1->artist,p2->artist);
 }
 
-int compare_by_tag(const void *pv1, const void *pv2)
+int compare_by_title(const void *pv1, const void *pv2)
 {
     ADT_Track_t *p1,*p2;
 
@@ -251,7 +282,5 @@ int compare_by_tag(const void *pv1, const void *pv2)
     if(p1==NULL || p2==NULL)
         return ERROR_NULL_POINTER;
 
-    return strcmp(p1->tag,p2->tag);
+    return compare_strings(p1->tag,p2->tag);
 }
-
-
