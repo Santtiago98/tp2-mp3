@@ -1,8 +1,16 @@
-/*errors.h*/
 #ifndef ERRORS__H
 #define ERRORS__H
 
-#define MAX_ERRORS 20
+#include <stdio.h>
+
+#include "main.h"
+#include "types.h"
+#include "vector.h"
+#include "mp3.h"
+#include "utils.h"
+
+
+#define MAX_ERRORS 25
 
 typedef enum 
 {
@@ -12,6 +20,7 @@ typedef enum
     ERROR_OUT_OF_MEMORY,
     ERROR_CANNOT_OPEN_FILE,
     ERROR_CANNOT_WRITE_FILE,
+    ERROR_DISK_SPACE,
     ERROR_CORRUPTED_FILE,
     ERROR_CANNOT_RENAME_FILE,
     ERROR_CANNOT_REMOVE_FILE,
@@ -19,5 +28,7 @@ typedef enum
     ERROR_INEXISTENT_KEY,
     ERROR_DUPLICATED_PRODUCT
 }status_t;
+
+status_t print_errors(status_t st);
 
 #endif
