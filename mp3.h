@@ -2,9 +2,11 @@
 #define MP3__H
 
 #include <stdio.h>
+
+#include "main.h"
 #include "errors.h"
-#include "vector.h"
 #include "types.h"
+#include "vector.h"
 #include "utils.h"
 
 
@@ -160,7 +162,7 @@ typedef enum
     GENRE_DRUM_SOLO,
     GENRE_A_CAPELA,
     GENRE_EURO_HOUSE,
-    GENRE_DANCE_HALL,
+    GENRE_DANCE_HALL
 
 }genre_t;
 
@@ -170,14 +172,22 @@ typedef struct
     char title[LEXEM_SPAN_TITLE + 1];
     char artist[LEXEM_SPAN_ARTIST +1];
     char album[LEXEM_SPAN_ALBUM +1];
-    short year;
     char genre[LEXEM_SPAN_GENRE +1];
+    short year;
+
 }ADT_Track_t;
 
 status_t ADT_Track_new_from_binary_file (FILE *, ADT_Track_t **);
-status_t ADT_Track_delete(ADT_Track_t **);
+status_t ADT_Track_delete(void **);
 status_t ADT_Track_compare(ADT_Track_t *, ADT_Track_t *);
 status_t read_header (FILE *, char []); /*cambiar de lugar a utils?? */
-status_t ADT_Track_print_to_csv(FILE*,ADT_Track_t *);
-status_t ADT_Track_print_to_xml(FILE*,ADT_Track_t *);
+status_t ADT_Track_print_to_csv(FILE*,void *);
+status_t ADT_Track_print_to_xml(FILE*,void *);
+status_t ADT_Track_print_to_html(FILE *, void *);
+int compare_strings(const char *,const char *);
+int compare_by_title(const void *, const void *);
+int compare_by_artist(const void *, const void *);
+int compare_by_genre(const void*, const void *);
 
+
+#endif
